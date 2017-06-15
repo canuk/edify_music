@@ -41,17 +41,18 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#contact">Help</a></li>
+            <li><a href="ABCquickRefv0_6.pdf" target="_blank">Help</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pre-loaded Songs <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a id="ode_to_joy" href="#">Ode to Joy</a></li>
+                <li><a id="menuet" href="#">Menuet</a></li>
+                <li><a id="cooleys" href="#">Cooley's</a></li>
+                <li><a id="prelude" href="#">Prelude</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">National Anthems</li>
                 <li><a id="ghana_anthem" href="#">Ghana</a></li>
-                <li><a href="#">Liberia</a></li>
+                <li><a id="liberia_anthem" href="#">Liberia</a></li>
               </ul>
             </li>
           </ul>
@@ -61,34 +62,31 @@
 
 
     <div class="container">
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <p>Type or paste an abc tune in the area below and see it rendered as you type. Also notice that you can click on the drawn notes and
-        	see the place in the text where that note is defined.</p>
+    <div class="alert alert-info alert-dismissible fade in" role="alert">
+      Type or paste an abc tune in the area below and see it rendered as you type. Also notice that you can click on the drawn notes and
+        	see the place in the text where that note is defined.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+      <div class="row">
+        <div class="col-md-6">Upload ABC notation text file: <input type="file" id="file" name="file" enctype="multipart/form-data" /></div>
+        <div class="col-md-6"><div id="abc-file-download"><button type="button" class="btn btn-success" value="save" id="save"><i class="fa fa-file-text-o"></i> Download as text file.</button></div></div>
       </div>
-
 <textarea name="abc" id="abc" rows="15">
-X: 1
-T: God Bless Our Homeland Ghana
-C: Philip Gbeho
-M: C
-L: 1/4
-Q: 1/4=70
-K: Ab
-c c3/4c/8 e (A3/4A/8)|d2 c3/2 A/2|f e d c|B B B2|c c3/4c/8 e A|
-w: God bless our home-land|Gha-na And|make our na-tion|great and strong,|Bold to de-fend for-
-d2 c3/2 c/2|B e (3(e/2f/2)e/2 (3(=d/2c/2)d/2|e3 (3(E/2F/2)G/2|A (A3/4B/4) c (c3/4B/4)|=A (B3/4c/4) d (3(F/2G/2)=A/2|
-w: e-ver The|cause of Freedom and|Right; Fill our|hearts with true hu-|mi-li-ty, Make us|
-B (B3/4c/4) d =d|e (e3/4d/4) c3/2 A/2|f e d c|B3/4A/4 G3/4F/4 E3/4E/4 F3/4G/4|A c (3(c/2d/2c/2) (3(B/2A/2)B/2|
-w: che-rish fear-less|ho-nes-ty, And| help us to re-|sist op-pres-sors' rule With all our|will and might e- ver-|
-(A3 A3/4)A/4|f e d c|B3/4A/4 G3/4F/4 E3/4E/4 F3/4G/4|A c (3(c/2d/2c/2) (3(B/2A/2)B/2|A4|]
-w: more. And|help us to re-|sist op-pres-sors' rule With all our|will and might e- ver-|more.|
+X:1
+T:Ode to Joy
+C:L. Van Beethoven
+M:4/4
+L:1/4
+K:D
+F F G A | A G F E | D D E F | F>E E2 |
+F F G A | A G F E | D D E F | E>D D2 |
+|:E E F D | E F/2G/2 F D | E F/2G/2 F E | D E A,2 |
+F F G A | A G F E | D D E F | E>D D2 :|
 </textarea>
-
       <div id="midi"></div>
-      <div id="midi-download"></div><br/>
-      <div id="abc-file-download"><button type="button" class="btn btn-success" value="save" id="save"><i class="fa fa-file-text-o"></i> Download as text file.</button></div>
+      <div id="midi-download"></div>
       <div id="warnings"></div>
       <div id="music"></div>
       <div id="paper0"></div>
@@ -114,7 +112,7 @@ w: more. And|help us to re-|sist op-pres-sors' rule With all our|will and might 
 	}
 
 	function initEditor() {
-		new ABCJS.Editor("abc", { paper_id: "paper0",
+		abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0",
 			generate_midi: true,
 			midi_id:"midi",
 			midi_download_id: "midi-download",
@@ -127,7 +125,7 @@ w: more. And|help us to re-|sist op-pres-sors' rule With all our|will and might 
 				listener: { highlight: selectionCallback }
 			}
 		});
-	}
+	};
 
 	window.addEventListener("load", initEditor, false);
 
@@ -139,7 +137,7 @@ w: more. And|help us to re-|sist op-pres-sors' rule With all our|will and might 
     var downloadLink = document.createElement("a");
     downloadLink.download = fileNameToSaveAs;
     downloadLink.innerHTML = "Download as .abc File";
-    if (window.webkitURL != null) {
+    if (window.URL != null) {
       // Chrome allows the link to be clicked without actually adding it to the DOM.
       downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
     } else {
@@ -163,12 +161,50 @@ w: more. And|help us to re-|sist op-pres-sors' rule With all our|will and might 
 
   $(document).ready(function(){
     $("#ghana_anthem").click(function(){
-      $('#abc').text('X: 1\nT: Cooley\'s\nM: 4/4\nL: 1/8\nR: reel\nK: Emin\n|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\nEBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\neB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|');
+      $('#abc').text('X: 1\nT: God Bless Our Homeland Ghana\nC: Philip Gbeho\nZ:Reuben Thiessen\nM: C\nL: 1/4\nQ: 1/4=70\nK: Ab\nc c3/4c/8 e (A3/4A/8)|d2 c3/2 A/2|f e d c|B B B2|\nw: God bless our home-land|Gha-na And|make our na-tion|great and strong,|\nc c3/4c/8 e A|d2 c3/2 c/2|B e (3(e/2f/2)e/2 (3(=d/2c/2)d/2|e3 (3(E/2F/2)G/2|\nw: Bold to de-fend for-|e-ver The|cause of Freedom and|Right; Fill our|\nA (A3/4B/4) c (c3/4B/4)|=A (B3/4c/4) d (3(F/2G/2)=A/2|B (B3/4c/4) d =d|e (e3/4d/4) c3/2 A/2|\nw: hearts with true hu-|mi-li-ty, Make us|che-rish fear-less|ho-nes-ty, And|\nf e d c|B3/4A/4 G3/4F/4 E3/4E/4 F3/4G/4|A c (3(c/2d/2c/2) (3(B/2A/2)B/2|(A3 A3/4)A/4|\nw: help us to re-|sist op-pres-sors\' rule With all our|will and mi g ht e- ver-|more. And|\nf e d c|B3/4A/4 G3/4F/4 E3/4E/4 F3/4G/4|A c (3(c/2d/2c/2) (3(B/2A/2)B/2|A4|]\nw: help us to re-|sist op-pres-sors\' rule With all our|will and mi g ht e- ver-|more.|');
       $("#abc").focus();
+      abc_editor.fireChanged();
+    });
+    $("#liberia_anthem").click(function(){
+      $("#abc").text('X: 2\nT: All Hail, Liberia, Hail!\nC: Olmstead Luca & Daniel Bashiel Warner\nZ:Reuben Thiessen\nM: 4/4\nL: 1/4\nQ: 1/4=100\nK: Bb\nz1 F|B3/2 B/2 B B|B3 F|c3/2 c/2 c c|c6/2 c|\nw: All |hail, Li-be-ria,| hail! All|hail, Li-be-ria,|hail! This|\nd3/2 d/2 d d|c3/2 B/2 A B| A2 G2| F2 z F|\nw: glo-rious land of|lib-er-ty shall|long be|ours Tho\'|\nF G A B|c d e c|d c B d|(f4|(f4)|(f4)|\nw: new her name, Green|be her fame, And|migh-ty be her|powers,|\n(f4)|f3)d|c d c d|(c4|(c4)|(c4)|c3)z|\nw: . And| migh-ty be her|powers.|\nM: 2/4\nL: 1/8\nz2 z1 F|F3 G|F3 G|F d c3/2 B/2|B2 A G|\nw: In|joy and|glad-ness|With our hears u-|ni-ted, We\'ll|\nF3 G|F3 G|F e d c|^c2 d2|g2 g3/2 g/2|f3 f|\nw: shout the|free-dom|of a race be-|night-ed,|Long live Li-|be-ria,|\ne3 e|d2 z d|c =B c d| e f e c|B2 c2|\nw: hap-py|land! A|home of glo-rious|li-ber-ty, By|God\'s com-|\nd3 d|c =B c d| e f e c|B2 A2|B2 z|]\nw: -mand! A|home of glo-rious|li-ber-ty, By|God\'s com-|mand!|');
+      $("#abc").focus();
+      abc_editor.fireChanged();
+    });
+    $("#ode_to_joy").click(function(){
+      $("#abc").text('X:3\nT:Ode to Joy\nC:L. Van Beethoven\nM:4/4\nL:1/4\nK:D\nF F G A | A G F E | D D E F | F>E E2 |\nF F G A | A G F E | D D E F | E>D D2 |\n|:E E F D | E F/2G/2 F D | E F/2G/2 F E | D E A,2 |\nF F G A | A G F E | D D E F | E>D D2 :|');
+      $("#abc").focus();
+      abc_editor.fireChanged();
+    });
+    $("#cooleys").click(function(){
+      $("#abc").text('X:4\nT: Cooley\'s\nM: 4/4\nL: 1/8\nR: reel\nK: Emin\n|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\nEBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\neB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|');
+      $("#abc").focus();
+      abc_editor.fireChanged();
+    });
+    $("#menuet").click(function(){
+      $("#abc").text('X:190\nT:103. Menuet\nC:trad.\nN:Van Bolhuis, manuscript 3, 1739, transcriptie Ad Kwakernaat\nM:3/4\nL:1/8\nQ:1/4=180\nK:D\ndA eA fA |g2 fg e2 |a2 gf ed |c2 Bc A2 |dA eA fA |g2 fg e2 |a2 A2 dc |\nd6 ::af fa a=c |B2 AB G2 |bg gb bd |c2 Bc A2 |dA eA fA |g2 (3gfe f2 |\ndA eA fA |g2 (3gfe f2 |dA AF FD |dA AF FD |dA AF FD |d2 e2 dc |d6 :|');
+      $("#abc").focus();
+      abc_editor.fireChanged();
+    });
+    $("#prelude").click(function(){
+      $("#abc").text('X:5\nT:Prelude\nT:Op. 28 no. 7\nC:Fr\'ed\'eric Chopin\nO:France\nZ:Transcribed by Frank Nordberg - http://www.musicaviva.com\nM:3/4\nL:1/8\n\K:G\n"^Andant|no"D2|B>cA2A2|A4e2|^c>dg2g2|g4B2|\n^G>Ac2c2|c4F2|F>GB2B2|B4D2|\nB>cA2A2|A4e2|^c>db2b2|b4B2|\nB>ce2e2|e4F2|A>Gg2g2|g4z2|]');
+      $("#abc").focus();
+      abc_editor.fireChanged();
     });
   });  
-	
+
+
+  document.getElementById('file').addEventListener('change', readFile, false);
+  
+  function readFile (evt) {
+    var files = evt.target.files;
+    var file = files[0];           
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      $('#abc').val(event.target.result);
+      abc_editor.fireChanged();            
+    }
+    reader.readAsText(file)
+  };
 </script>
-<!-- Placed at the end of the document so the pages load faster -->
 </body>
 </html>
