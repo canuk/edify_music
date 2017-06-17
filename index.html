@@ -40,8 +40,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="ABCquickRefv0_6.pdf" target="_blank">Help</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="help.html">Help</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sample Songs <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -186,7 +186,7 @@ F F G A | A G F E | D D E F | E>D D2 :|
       abc_editor.fireChanged();
     });
     $("#prelude").click(function(){
-      $("#abc").text('X:5\nT:Prelude\nT:Op. 28 no. 7\nC:Fr\'ed\'eric Chopin\nO:France\nZ:Transcribed by Frank Nordberg - http://www.musicaviva.com\nM:3/4\nL:1/8\n\K:G\n"^Andant|no"D2|B>cA2A2|A4e2|^c>dg2g2|g4B2|\n^G>Ac2c2|c4F2|F>GB2B2|B4D2|\nB>cA2A2|A4e2|^c>db2b2|b4B2|\nB>ce2e2|e4F2|A>Gg2g2|g4z2|]');
+      $("#abc").text('X:5\nT:Prelude\nT:Op. 28 no. 7\nC:Frederic Chopin\nZ:Transcribed by Frank Nordberg - http://www.musicaviva.com\nM:3/4\nL:1/8\nQ:"Andantino"\n\K:G\nD2|B>cA2A2|A4e2|^c>dg2g2|g4B2|\n^G>Ac2c2|c4F2|F>GB2B2|B4D2|\nB>cA2A2|A4e2|^c>db2b2|b4B2|\nB>ce2e2|e4F2|A>Gg2g2|g4z2|]');
       $("#abc").focus();
       abc_editor.fireChanged();
     });
